@@ -1,0 +1,60 @@
+.login-container {
+    padding: 20px;
+    background-color: #f2f6ff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  h3 {
+    padding: 0px 0 16px 0;
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+  }
+  
+  input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: white;
+  }
+  
+  .authbutton {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  .toggle-link {
+    text-align: center;
+    color: #3977f2;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  
+  .toggle-link:hover {
+    text-decoration: underline;
+  }
+  
+  form {
+    width: 450px;
+  }
+  
+  @media (max-width: 480px) {
+    .grid {
+      display: block !important;
+    }
+    form {
+      width: 100%;
+    }
+  }
+  

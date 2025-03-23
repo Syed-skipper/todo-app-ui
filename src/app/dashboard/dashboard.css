@@ -1,0 +1,83 @@
+.tabs {
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tab {
+  flex: 1;
+  padding: 5px 20px;
+  border: none;
+  background-color: lightgrey;
+  color: black;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.tab.active {
+  background-color: grey;
+  color: white;
+}
+
+.tab:not(.active):hover {
+  background-color: #cdcdcd;
+}
+
+.task-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  margin-bottom: 15px;
+}
+
+.header1 {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.header-btn {
+  display: flex;
+  gap: 10px;
+}
+
+.card {
+  width: 80%;
+  padding: 8px 17px;
+  max-height: 400px;
+  overflow-y: scroll;
+  min-height: 200px;
+}
+
+input {
+  padding: 8px;
+  color: rgb(0 0 0 / 87%);
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  background-color: white;
+}
+
+@media (max-width: 480px) {
+  .tabs {
+    width: fit-content;
+    margin-bottom: 15px;
+  }
+
+  .header1 {
+    margin-bottom: 15px;
+  }
+
+  .tab {
+    padding: 5px 15px;
+  }
+  .task-header {
+    flex-direction: column;
+  }
+
+  .header-btn {
+    margin-bottom: 15px;
+  }
+}
