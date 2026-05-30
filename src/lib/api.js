@@ -21,6 +21,7 @@ export const authApi = {
 
 export const cardsApi = {
   list: () => api.get('cards'),
+  allWithSummaries: (params) => api.get('cards/summaries/all', { params }),
   summary: (id, params) => api.get(`cards/${id}/summary`, { params }),
   create: (data) => api.post('cards', data),
   update: (id, data) => api.put(`cards/${id}`, data),

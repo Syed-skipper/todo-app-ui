@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@mui/material/Button";
+import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import { authApi } from "../../lib/api";
 import "./login.css";
 
@@ -13,6 +14,7 @@ export default function Login() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const saveSession = (res) => {
@@ -25,12 +27,16 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
     try {
       const response = await authApi.login({ email, password });
       saveSession(response.data);
       router.push("/dashboard");
     } catch {
       setError("Invalid email or password");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,41 +46,96 @@ export default function Login() {
       setError("Passwords don't match");
       return;
     }
+    setLoading(true);
+    setError("");
     try {
       const response = await authApi.register({ name, email, password });
       saveSession(response.data);
       router.push("/dashboard");
     } catch {
       setError("Failed to register. Email may already exist.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center flex-col justify-center min-h-screen p-8 bg-gradient-to-br from-slate-900 to-slate-700">
-      <div className="login-container" style={{ maxWidth: 400, width: "100%" }}>
-        <h3 style={{ color: "#0f172a", marginBottom: 8 }}>Family Expense Tracker</h3>
-        <p style={{ color: "#64748b", marginBottom: 20, fontSize: 14 }}>
-          {isLogin ? "Sign in to manage shared credit card expenses" : "Create your family account"}
-        </p>
-        <h4 style={{ marginBottom: 16 }}>{isLogin ? "Log in" : "Sign up"}</h4>
+    <div className="login-page">
+      <div className="login-container">
+        <div className="login-brand">
+          <div className="login-brand-icon">
+            <AccountBalanceWalletOutlinedIcon sx={{ fontSize: 28 }} />
+          </div>
+          <h1>Family Expense</h1>
+          <p>
+            {isLogin
+              ? "A calm space to track shared spending together"
+              : "Join your family and manage expenses with ease"}
+          </p>
+        </div>
+
+        <p className="login-form-title">{isLogin ? "Welcome back" : "Create account"}</p>
+
         <form onSubmit={isLogin ? handleLogin : handleSignUp}>
           {!isLogin && (
-            <input type="text" placeholder="Full name" value={name} onChange={(e) => setName(e.target.value)} required />
+            <input
+              type="text"
+              placeholder="Full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           )}
-          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input
+            type="email"
+            placeholder="Email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
           {!isLogin && (
-            <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+            <input
+              type="password"
+              placeholder="Confirm password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
           )}
-          <div style={{ marginBottom: 15 }}>
-            <Button type="submit" variant="contained" fullWidth style={{ backgroundColor: "#0f172a" }}>
-              {isLogin ? "Login" : "Sign Up"}
-            </Button>
-          </div>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            disabled={loading}
+            sx={{
+              py: 1.5,
+              mt: 1,
+              borderRadius: 3,
+              fontSize: "0.95rem",
+              boxShadow: "0 4px 14px rgba(107, 144, 128, 0.3)",
+            }}
+          >
+            {loading ? "Please wait…" : isLogin ? "Sign in" : "Create account"}
+          </Button>
         </form>
+
         {error && <p className="error-message">{error}</p>}
-        <p onClick={() => { setIsLogin(!isLogin); setError(""); }} className="toggle-link">
-          {isLogin ? "Don't have an account? Sign up" : "Already have an account? Login"}
+
+        <p
+          onClick={() => {
+            setIsLogin(!isLogin);
+            setError("");
+          }}
+          className="toggle-link"
+        >
+          {isLogin ? "New here? Create an account" : "Already have an account? Sign in"}
         </p>
       </div>
     </div>

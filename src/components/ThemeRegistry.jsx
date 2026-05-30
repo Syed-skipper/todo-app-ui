@@ -1,15 +1,9 @@
 "use client";
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-
-const theme = createTheme({
-  palette: {
-    mode: "light",
-    primary: { main: "#0f172a" },
-  },
-});
+import { theme } from "../theme/theme";
 
 export default function ThemeRegistry({ children }) {
   return (
