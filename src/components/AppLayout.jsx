@@ -88,7 +88,12 @@ export default function AppLayout({ children, title, subtitle }) {
             }}
           >
             <Box
-              sx={{ display: "flex", alignItems: "center", gap: 1.5, flexGrow: { xs: 1, md: 0 } }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1.5,
+                flexGrow: { xs: 1, md: 0 },
+              }}
             >
               <Box
                 sx={{
@@ -105,16 +110,33 @@ export default function AppLayout({ children, title, subtitle }) {
                 <AccountBalanceWalletOutlinedIcon fontSize="small" />
               </Box>
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600, lineHeight: 1.2, color: appColors.ink }}>
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    fontWeight: 600,
+                    lineHeight: 1.2,
+                    color: appColors.ink,
+                  }}
+                >
                   Family Expense
                 </Typography>
-                <Typography variant="caption" sx={{ color: appColors.inkMuted }}>
+                <Typography
+                  variant="caption"
+                  sx={{ color: appColors.inkMuted }}
+                >
                   Shared tracker
                 </Typography>
               </Box>
             </Box>
 
-            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 0.5, flexGrow: 1, ml: 2 }}>
+            <Box
+              sx={{
+                display: { xs: "none", md: "flex" },
+                gap: 0.5,
+                flexGrow: 1,
+                ml: 2,
+              }}
+            >
               {pages.map((p) => {
                 const active = pathname === p.path;
                 return (
@@ -128,7 +150,11 @@ export default function AppLayout({ children, title, subtitle }) {
                       color: active ? appColors.sage : appColors.inkMuted,
                       fontWeight: active ? 600 : 500,
                       bgcolor: active ? appColors.mist : "transparent",
-                      "&:hover": { bgcolor: active ? appColors.mist : alpha(appColors.mist, 0.6) },
+                      "&:hover": {
+                        bgcolor: active
+                          ? appColors.mist
+                          : alpha(appColors.mist, 0.6),
+                      },
                     }}
                   >
                     {p.label}
@@ -166,7 +192,13 @@ export default function AppLayout({ children, title, subtitle }) {
                 badgeContent={unread}
                 color="error"
                 invisible={unread === 0}
-                sx={{ "& .MuiBadge-badge": { fontSize: 10, minWidth: 16, height: 16 } }}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    fontSize: 10,
+                    minWidth: 16,
+                    height: 16,
+                  },
+                }}
               >
                 <IconButton size="small">
                   <NotificationsNoneOutlinedIcon fontSize="small" />
@@ -202,10 +234,20 @@ export default function AppLayout({ children, title, subtitle }) {
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: { xs: 3, md: 4 }, px: { xs: 2, sm: 3 } }}>
+      <Container
+        maxWidth="lg"
+        sx={{ py: { xs: 3, md: 4 }, px: { xs: 2, sm: 3 } }}
+      >
         {title && (
           <Box sx={{ mb: 3.5 }}>
-            <Typography variant="h4" sx={{ fontWeight: 600, color: appColors.ink, mb: subtitle ? 0.5 : 0 }}>
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: 600,
+                color: appColors.ink,
+                mb: subtitle ? 0.5 : 0,
+              }}
+            >
               {title}
             </Typography>
             {subtitle && (
