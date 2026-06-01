@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import ThemeRegistry from "../components/ThemeRegistry";
+import AppChakraProvider from "../components/ChakraProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <ThemeRegistry>{children}</ThemeRegistry>
+        <AppChakraProvider>{children}</AppChakraProvider>
       </body>
     </html>
   );

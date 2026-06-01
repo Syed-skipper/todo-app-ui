@@ -1,39 +1,38 @@
 "use client";
 
-import { Card, CardContent, Typography, Box } from "@mui/material";
+import { Box, Card, Heading, Text } from "@chakra-ui/react";
+import { appColors } from "../../theme/theme";
 
 export default function SoftCard({ title, subtitle, children, action, noPadding }) {
   return (
-    <Card>
-      <CardContent sx={{ p: noPadding ? 0 : 2.5, '&:last-child': { pb: noPadding ? 0 : 2.5 } }}>
+    <Card.Root borderRadius="16px" border="1px solid" borderColor={appColors.border} bg={appColors.paper}>
+      <Card.Body p={noPadding ? 0 : 5}>
         {(title || action) && (
           <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              mb: subtitle || children ? 2 : 0,
-              px: noPadding ? 2.5 : 0,
-              pt: noPadding ? 2.5 : 0,
-            }}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="flex-start"
+            mb={subtitle || children ? 4 : 0}
+            px={noPadding ? 5 : 0}
+            pt={noPadding ? 5 : 0}
           >
             <Box>
               {title && (
-                <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                <Heading size="md" fontWeight={600} color={appColors.ink}>
                   {title}
-                </Typography>
+                </Heading>
               )}
               {subtitle && (
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>
+                <Text fontSize="sm" color={appColors.inkMuted} mt={1}>
                   {subtitle}
-                </Typography>
+                </Text>
               )}
             </Box>
             {action}
           </Box>
         )}
         {children}
-      </CardContent>
-    </Card>
+      </Card.Body>
+    </Card.Root>
   );
 }

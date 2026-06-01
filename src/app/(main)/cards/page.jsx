@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Grid, Typography, Box, LinearProgress, Chip, Skeleton, Button } from "@mui/material";
-import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, SimpleGrid, Text, Progress, Badge, Skeleton, Button, Flex } from "@chakra-ui/react";
+import { HiCreditCard, HiPlus } from "react-icons/hi2";
 import PageHeader from "../../../components/PageHeader";
 import AddCardModal from "../../../components/AddCardModal";
 import { invalidateCache } from "../../../lib/simpleCache";
@@ -41,9 +40,7 @@ export default function CardsPage() {
         const sums = {};
         items.forEach((item, i) => {
           const id = item.cardId || item.card?._id;
-          if (id) {
-            sums[id] = { ...item, gradient: cardGradients[i % cardGradients.length] };
-          }
+          if (id) sums[id] = { ...item, gradient: cardGradients[i % cardGradients.length] };
         });
         setSummaries(sums);
       })
@@ -60,143 +57,94 @@ export default function CardsPage() {
         title="Credit cards"
         subtitle="Monitor limits and usage calmly"
         action={
-          <Button variant="contained" startIcon={<AddIcon />} onClick={() => setAddCardOpen(true)}>
-            Add card
+          <Button bg={appColors.sage} color="white" _hover={{ bg: appColors.sageLight }} onClick={() => setAddCardOpen(true)}>
+            <HiPlus /> Add card
           </Button>
         }
       />
-      <Grid container spacing={2.5}>
+      <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={5}>
         {cards.length === 0
-          ? [1, 2, 3].map((i) => (
-              <Grid item xs={12} sm={6} lg={4} key={i}>
-                <Skeleton variant="rounded" height={280} sx={{ borderRadius: 3 }} />
-              </Grid>
-            ))
+          ? [1, 2, 3].map((i) => <Skeleton key={i} height="280px" borderRadius="16px" />)
           : cards.map((card, index) => {
               const summary = summaries[card._id];
               const util = summary?.utilizationPercent ?? calcUtil(card);
               const gradient = summary?.gradient || cardGradients[index % cardGradients.length];
 
               return (
-                <Grid item xs={12} sm={6} lg={4} key={card._id}>
-                  <Box
-                    sx={{
-                      borderRadius: 3,
-                      overflow: "hidden",
-                      border: `1px solid ${appColors.border}`,
-                      bgcolor: appColors.paper,
-                      transition: "transform 0.2s, box-shadow 0.2s",
-                      "&:hover": {
-                        transform: "translateY(-2px)",
-                        boxShadow: "0 8px 24px rgba(61, 74, 82, 0.08)",
-                      },
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        background: gradient,
-                        color: "#fff",
-                        p: 2.5,
-                        minHeight: 120,
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                        <CreditCardOutlinedIcon sx={{ opacity: 0.9 }} />
-                        <Chip
-                          label={card.status}
-                          size="small"
-                          sx={{
-                            bgcolor: "rgba(255,255,255,0.25)",
-                            color: "#fff",
-                            fontWeight: 500,
-                            textTransform: "capitalize",
-                          }}
-                        />
-                      </Box>
-                      <Box>
-                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                          {card.nickname}
-                        </Typography>
-                        <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                          {card.bankName} · •••• {card.lastFourDigits}
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box sx={{ p: 2.5 }}>
-                      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                        <Box>
-                          <Typography variant="caption" color="text.secondary">
-                            Available
-                          </Typography>
-                          <Typography fontWeight={600}>
-                            ₹{(card.availableBalance ?? 0).toLocaleString("en-IN")}
-                          </Typography>
-                        </Box>
-                        <Box sx={{ textAlign: "right" }}>
-                          <Typography variant="caption" color="text.secondary">
-                            Limit
-                          </Typography>
-                          <Typography fontWeight={600}>
-                            ₹{card.creditLimit?.toLocaleString("en-IN")}
-                          </Typography>
-                        </Box>
-                      </Box>
-
-                      <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>
-                        {util}% utilized
-                      </Typography>
-                      <LinearProgress
-                        variant="determinate"
-                        value={Math.min(100, util)}
-                        sx={{
-                          mb: 2,
-                          "& .MuiLinearProgress-bar": {
-                            bgcolor: util > 80 ? appColors.warning : appColors.sage,
-                          },
-                        }}
-                      />
-
-                      {summary ? (
-                        <Typography variant="body2" color="text.secondary">
-                          This cycle:{" "}
-                          <Typography component="span" fontWeight={600} color="text.primary">
-                            ₹{summary.totalSpent?.toLocaleString("en-IN")}
-                          </Typography>
-                          {" "}· {summary.transactionCount} transactions
-                        </Typography>
-                      ) : (
-                        <Skeleton variant="text" width="70%" />
-                      )}
-                      <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
-                        Due day {card.dueDate} · Cycle {card.billingCycleStart}–{card.billingCycleEnd}
-                      </Typography>
+                <Box
+                  key={card._id}
+                  borderRadius="16px"
+                  overflow="hidden"
+                  border="1px solid"
+                  borderColor={appColors.border}
+                  bg={appColors.paper}
+                  transition="transform 0.2s, box-shadow 0.2s"
+                  _hover={{ transform: "translateY(-2px)", boxShadow: "0 8px 24px rgba(61, 74, 82, 0.08)" }}
+                >
+                  <Box background={gradient} color="white" p={5} minH="120px" display="flex" flexDirection="column" justifyContent="space-between">
+                    <Flex justify="space-between" align="flex-start">
+                      <HiCreditCard size={24} style={{ opacity: 0.9 }} />
+                      <Badge bg="whiteAlpha.300" color="white" textTransform="capitalize">
+                        {card.status}
+                      </Badge>
+                    </Flex>
+                    <Box>
+                      <Text fontSize="lg" fontWeight={600}>{card.nickname}</Text>
+                      <Text fontSize="sm" opacity={0.9}>
+                        {card.bankName} · •••• {card.lastFourDigits}
+                      </Text>
                     </Box>
                   </Box>
-                </Grid>
+
+                  <Box p={5}>
+                    <Flex justify="space-between" mb={4}>
+                      <Box>
+                        <Text fontSize="xs" color={appColors.inkMuted}>Available</Text>
+                        <Text fontWeight={600}>₹{(card.availableBalance ?? 0).toLocaleString("en-IN")}</Text>
+                      </Box>
+                      <Box textAlign="right">
+                        <Text fontSize="xs" color={appColors.inkMuted}>Limit</Text>
+                        <Text fontWeight={600}>₹{card.creditLimit?.toLocaleString("en-IN")}</Text>
+                      </Box>
+                    </Flex>
+
+                    <Text fontSize="xs" color={appColors.inkMuted} mb={1}>{util}% utilized</Text>
+                    <Progress.Root value={Math.min(100, util)} max={100} size="sm" mb={4}>
+                      <Progress.Track bg={appColors.mist}>
+                        <Progress.Range bg={util > 80 ? appColors.warning : appColors.sage} />
+                      </Progress.Track>
+                    </Progress.Root>
+
+                    {summary ? (
+                      <Text fontSize="sm" color={appColors.inkMuted}>
+                        This cycle:{" "}
+                        <Text as="span" fontWeight={600} color={appColors.ink}>
+                          ₹{summary.totalSpent?.toLocaleString("en-IN")}
+                        </Text>
+                        {" "}· {summary.transactionCount} transactions
+                      </Text>
+                    ) : (
+                      <Skeleton height="20px" width="70%" />
+                    )}
+                    <Text fontSize="xs" color={appColors.inkMuted} mt={2} display="block">
+                      Due day {card.dueDate} · Cycle {card.billingCycleStart}–{card.billingCycleEnd}
+                    </Text>
+                  </Box>
+                </Box>
               );
             })}
-      </Grid>
+      </SimpleGrid>
 
       {cards.length === 0 && (
-        <Box sx={{ textAlign: "center", py: 6 }}>
-          <Typography color="text.secondary" sx={{ mb: 2 }}>
-            No credit cards added yet.
-          </Typography>
-          <Button variant="contained" startIcon={<AddIcon />} onClick={() => setAddCardOpen(true)}>
-            Add your first card
+        <Box textAlign="center" py={10}>
+          <Text color={appColors.inkMuted} mb={4}>No credit cards added yet.</Text>
+          <Button bg={appColors.sage} color="white" onClick={() => setAddCardOpen(true)}>
+            <HiPlus /> Add your first card
           </Button>
         </Box>
       )}
 
-      <AddCardModal
-        open={addCardOpen}
-        onClose={() => setAddCardOpen(false)}
-        onCreated={() => loadCards()}
-      />
+      <AddCardModal open={addCardOpen} onClose={() => setAddCardOpen(false)} onCreated={() => loadCards()} />
     </>
   );
 }

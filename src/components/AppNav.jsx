@@ -7,48 +7,53 @@ import {
   Button,
   Container,
   IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-  Badge,
+  Text,
   Avatar,
-  alpha,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
+  Menu,
+  Portal,
+  Badge,
+} from "@chakra-ui/react";
+import { HiBars3, HiBell, HiMoon, HiSun } from "react-icons/hi2";
+import { HiOutlineWallet } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import { notificationsApi } from "../lib/api";
 import { appColors } from "../theme/theme";
+import { useThemeMode } from "../context/ThemeModeContext";
 
 const pages = [
   { label: "Dashboard", path: "/dashboard" },
   { label: "Expenses", path: "/expenses" },
+  { label: "Family", path: "/family-members" },
+  { label: "Settlements", path: "/settlements" },
+  { label: "Statements", path: "/statements" },
   { label: "Cards", path: "/cards" },
-  { label: "Budgets", path: "/budgets" },
-  { label: "Insights", path: "/insights" },
 ];
 
-const navLinkSx = (active) => ({
-  px: 2,
-  py: 1,
-  borderRadius: 2,
-  textDecoration: "none",
-  display: "inline-block",
-  fontSize: "0.875rem",
-  fontFamily: "inherit",
-  color: active ? appColors.sage : appColors.inkMuted,
-  fontWeight: active ? 600 : 500,
-  bgcolor: active ? appColors.mist : "transparent",
-  transition: "background-color 0.15s ease, color 0.15s ease",
-  "&:hover": {
-    bgcolor: active ? appColors.mist : alpha(appColors.mist, 0.6),
-  },
-});
+function NavLink({ href, active, children }) {
+  return (
+    <Box
+      as={Link}
+      href={href}
+      prefetch
+      px={4}
+      py={2}
+      borderRadius="8px"
+      fontSize="sm"
+      fontWeight={active ? 600 : 500}
+      color={active ? appColors.sage : appColors.inkMuted}
+      bg={active ? appColors.mist : "transparent"}
+      textDecoration="none"
+      transition="background 0.15s, color 0.15s"
+      _hover={{ bg: appColors.mist }}
+    >
+      {children}
+    </Box>
+  );
+}
 
 export default function AppNav() {
   const pathname = usePathname();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const { mode, toggleMode } = useThemeMode();
   const [mounted, setMounted] = useState(false);
   const [userName, setUserName] = useState("");
   const [unread, setUnread] = useState(0);
@@ -78,121 +83,106 @@ export default function AppNav() {
 
   return (
     <Box
-      component="header"
-      sx={{
-        position: "sticky",
-        top: 0,
-        zIndex: 1100,
-        bgcolor: alpha(appColors.paper, 0.92),
-        backdropFilter: "blur(12px)",
-        borderBottom: `1px solid ${appColors.border}`,
-      }}
+      as="header"
+      position="sticky"
+      top={0}
+      zIndex={1100}
+      bg="color-mix(in srgb, var(--paper) 92%, transparent)"
+      backdropFilter="blur(12px)"
+      borderBottom="1px solid"
+      borderColor={appColors.border}
     >
-      <Container maxWidth="lg">
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            py: 1.5,
-            minHeight: 64,
-          }}
-        >
-          <Link href="/dashboard" prefetch style={{ textDecoration: "none", color: "inherit" }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexGrow: { xs: 1, md: 0 } }}>
+      <Container maxW="container.lg" px={4}>
+        <Box display="flex" alignItems="center" gap={4} py={3} minH="64px">
+          <Link href="/dashboard" prefetch style={{ textDecoration: "none", color: "inherit", flexGrow: { base: 1, md: 0 } }}>
+            <Box display="flex" alignItems="center" gap={3}>
               <Box
-                sx={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 2,
-                  bgcolor: appColors.mist,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: appColors.sage,
-                }}
+                w="40px"
+                h="40px"
+                borderRadius="8px"
+                bg={appColors.mist}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                color={appColors.sage}
+                fontSize="xl"
               >
-                <AccountBalanceWalletOutlinedIcon fontSize="small" />
+                <HiOutlineWallet />
               </Box>
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600, lineHeight: 1.2, color: appColors.ink }}>
+              <Box display={{ base: "none", sm: "block" }}>
+                <Text fontWeight={600} lineHeight={1.2} color={appColors.ink}>
                   Family Expense
-                </Typography>
-                <Typography variant="caption" sx={{ color: appColors.inkMuted }}>
+                </Text>
+                <Text fontSize="xs" color={appColors.inkMuted}>
                   Shared tracker
-                </Typography>
+                </Text>
               </Box>
             </Box>
           </Link>
 
-          <Box sx={{ display: { xs: "none", md: "flex" }, gap: 0.5, flexGrow: 1, ml: 2 }}>
+          <Box display={{ base: "none", md: "flex" }} gap={1} flex={1} ml={2}>
             {pages.map((p) => (
-              <Box
-                key={p.path}
-                component={Link}
-                href={p.path}
-                prefetch
-                sx={navLinkSx(pathname === p.path)}
-              >
+              <NavLink key={p.path} href={p.path} active={pathname === p.path}>
                 {p.label}
-              </Box>
+              </NavLink>
             ))}
           </Box>
 
-          <IconButton sx={{ display: { md: "none" } }} onClick={(e) => setAnchorEl(e.currentTarget)}>
-            <MenuIcon />
+          <Menu.Root>
+            <Menu.Trigger asChild>
+              <IconButton display={{ md: "none" }} variant="ghost" aria-label="Menu" size="sm">
+                <HiBars3 />
+              </IconButton>
+            </Menu.Trigger>
+            <Portal>
+              <Menu.Positioner>
+                <Menu.Content borderRadius="12px" minW="180px" bg={appColors.paper} borderColor={appColors.border}>
+                  {pages.map((p) => (
+                    <Menu.Item key={p.path} value={p.path} asChild>
+                      <Link href={p.path} prefetch style={{ textDecoration: "none", width: "100%" }}>
+                        {p.label}
+                      </Link>
+                    </Menu.Item>
+                  ))}
+                </Menu.Content>
+              </Menu.Positioner>
+            </Portal>
+          </Menu.Root>
+
+          <IconButton variant="ghost" size="sm" onClick={toggleMode} aria-label="Toggle theme">
+            {mode === "dark" ? <HiSun /> : <HiMoon />}
           </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={() => setAnchorEl(null)}
-            PaperProps={{ sx: { borderRadius: 2, mt: 1, minWidth: 180 } }}
-          >
-            {pages.map((p) => (
-              <MenuItem
-                key={p.path}
-                component={Link}
-                href={p.path}
-                prefetch
-                onClick={() => setAnchorEl(null)}
-                selected={pathname === p.path}
-                sx={{ borderRadius: 1, mx: 0.5 }}
-              >
-                {p.label}
-              </MenuItem>
-            ))}
-          </Menu>
 
           {mounted && (
-            <Badge
-              badgeContent={unread}
-              color="error"
-              invisible={unread === 0}
-              sx={{ "& .MuiBadge-badge": { fontSize: 10, minWidth: 16, height: 16 } }}
-            >
-              <IconButton size="small">
-                <NotificationsNoneOutlinedIcon fontSize="small" />
+            <Box position="relative">
+              <IconButton variant="ghost" size="sm" aria-label="Notifications">
+                <HiBell />
               </IconButton>
-            </Badge>
+              {unread > 0 && (
+                <Badge
+                  position="absolute"
+                  top={0}
+                  right={0}
+                  size="sm"
+                  colorPalette="red"
+                  borderRadius="full"
+                  minW="16px"
+                  h="16px"
+                  fontSize="10px"
+                >
+                  {unread}
+                </Badge>
+              )}
+            </Box>
           )}
 
           {mounted && userName && (
-            <Avatar
-              sx={{
-                width: 36,
-                height: 36,
-                bgcolor: appColors.sageLight,
-                color: "#fff",
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                display: { xs: "none", sm: "flex" },
-              }}
-            >
-              {initials}
-            </Avatar>
+            <Avatar.Root size="sm" display={{ base: "none", sm: "flex" }} bg={appColors.sageLight} color="white">
+              <Avatar.Fallback fontWeight={600}>{initials}</Avatar.Fallback>
+            </Avatar.Root>
           )}
 
-          <Button variant="outlined" size="small" onClick={handleLogout} sx={{ ml: { xs: 0, sm: 0.5 } }}>
+          <Button variant="outline" size="sm" onClick={handleLogout} borderColor={appColors.border}>
             Logout
           </Button>
         </Box>

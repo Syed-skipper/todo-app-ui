@@ -1,22 +1,19 @@
 "use client";
 
-import { Box, LinearProgress, Typography } from "@mui/material";
+import { Box, Progress, Text } from "@chakra-ui/react";
 import { appColors } from "../../theme/theme";
 
 export default function PageLoading({ message = "Loading..." }) {
   return (
-    <Box sx={{ py: 6, textAlign: 'center' }}>
-      <LinearProgress
-        sx={{
-          maxWidth: 200,
-          mx: 'auto',
-          mb: 2,
-          '& .MuiLinearProgress-bar': { bgcolor: appColors.sage },
-        }}
-      />
-      <Typography variant="body2" color="text.secondary">
+    <Box py={12} textAlign="center">
+      <Progress.Root value={null} maxW="200px" mx="auto" mb={4} size="sm">
+        <Progress.Track bg={appColors.mist} borderRadius="8px">
+          <Progress.Range bg={appColors.sage} />
+        </Progress.Track>
+      </Progress.Root>
+      <Text fontSize="sm" color={appColors.inkMuted}>
         {message}
-      </Typography>
+      </Text>
     </Box>
   );
 }

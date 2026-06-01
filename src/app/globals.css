@@ -1,11 +1,40 @@
 @import "tailwindcss";
 
-:root {
+:root,
+[data-theme="light"] {
   --background: #f7f8fa;
   --foreground: #3d4a52;
-  --sage: #6b9080;
-  --mist: #eaf4f1;
+  --cream: #f7f8fa;
+  --paper: #ffffff;
+  --ink: #3d4a52;
+  --ink-muted: #7d8b94;
   --border: #e8edf2;
+  --mist: #eaf4f1;
+  --sage: #6b9080;
+  --sage-light: #a4c3b2;
+  --sage-muted: #cce3de;
+  --blush: #f0e6df;
+  --warning: #d4a574;
+  --error: #d4918a;
+  --success: #8fbc8f;
+}
+
+[data-theme="dark"] {
+  --background: #0f1419;
+  --foreground: #e8edf2;
+  --cream: #0f1419;
+  --paper: #1a222c;
+  --ink: #e8edf2;
+  --ink-muted: #94a3b0;
+  --border: #2a3544;
+  --mist: #1e2a36;
+  --sage: #7ba892;
+  --sage-light: #5a8a72;
+  --sage-muted: #2a4038;
+  --blush: #2a2420;
+  --warning: #c9a06a;
+  --error: #c98a84;
+  --success: #7a9a7a;
 }
 
 @theme inline {
@@ -20,8 +49,14 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--cream);
+  background-image: radial-gradient(ellipse 80% 50% at 50% -20%, var(--mist) 0%, transparent 50%);
+  color: var(--ink);
   font-family: var(--font-geist-sans), "Segoe UI", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+[data-theme="dark"] body {
+  background-image: none;
 }

@@ -1,69 +1,52 @@
 "use client";
 
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Box, Card, Text } from "@chakra-ui/react";
 import { appColors } from "../../theme/theme";
 
 export default function StatCard({ label, value, subtext, highlight = false, icon }) {
   return (
-    <Card
-      sx={{
-        height: '100%',
-        background: highlight
-          ? `linear-gradient(135deg, ${appColors.sage} 0%, #5a7d6e 100%)`
-          : appColors.paper,
-        border: highlight ? 'none' : undefined,
-        color: highlight ? '#fff' : 'inherit',
-        '& .MuiTypography-root': highlight ? { color: 'inherit' } : {},
-      }}
+    <Card.Root
+      h="full"
+      bg={highlight ? undefined : appColors.paper}
+      background={highlight ? `linear-gradient(135deg, ${appColors.sage} 0%, #5a7d6e 100%)` : undefined}
+      color={highlight ? "white" : "inherit"}
+      border={highlight ? "none" : "1px solid"}
+      borderColor={appColors.border}
+      borderRadius="16px"
+      boxShadow="0 2px 12px rgba(61, 74, 82, 0.04)"
     >
-      <CardContent sx={{ p: 2.5, '&:last-child': { pb: 2.5 } }}>
-        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+      <Card.Body p={5}>
+        <Box display="flex" alignItems="flex-start" justifyContent="space-between">
           <Box>
-            <Typography
-              variant="body2"
-              sx={{
-                opacity: highlight ? 0.9 : 1,
-                color: highlight ? 'rgba(255,255,255,0.85)' : 'text.secondary',
-                mb: 0.5,
-                fontSize: '0.8rem',
-              }}
-            >
+            <Text fontSize="sm" color={highlight ? "whiteAlpha.800" : appColors.inkMuted} mb={1}>
               {label}
-            </Typography>
-            <Typography variant="h5" sx={{ fontWeight: 600, letterSpacing: '-0.02em' }}>
+            </Text>
+            <Text fontSize="xl" fontWeight={600} letterSpacing="-0.02em">
               {value}
-            </Typography>
+            </Text>
             {subtext && (
-              <Typography
-                variant="caption"
-                sx={{
-                  mt: 0.5,
-                  display: 'block',
-                  color: highlight ? 'rgba(255,255,255,0.75)' : 'text.secondary',
-                }}
-              >
+              <Text fontSize="xs" mt={1} color={highlight ? "whiteAlpha.700" : appColors.inkMuted}>
                 {subtext}
-              </Typography>
+              </Text>
             )}
           </Box>
           {icon && (
             <Box
-              sx={{
-                width: 44,
-                height: 44,
-                borderRadius: 2,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                bgcolor: highlight ? 'rgba(255,255,255,0.15)' : appColors.mist,
-                color: highlight ? '#fff' : appColors.sage,
-              }}
+              w="44px"
+              h="44px"
+              borderRadius="8px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              bg={highlight ? "whiteAlpha.200" : appColors.mist}
+              color={highlight ? "white" : appColors.sage}
+              fontSize="xl"
             >
               {icon}
             </Box>
           )}
         </Box>
-      </CardContent>
-    </Card>
+      </Card.Body>
+    </Card.Root>
   );
 }

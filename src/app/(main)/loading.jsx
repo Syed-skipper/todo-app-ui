@@ -1,16 +1,18 @@
-import { Box, Skeleton } from "@mui/material";
+"use client";
+
+import { Box, Skeleton } from "@chakra-ui/react";
 
 export default function MainLoading() {
   return (
     <Box>
-      <Skeleton variant="text" width={220} height={40} sx={{ mb: 1 }} />
-      <Skeleton variant="text" width={320} height={24} sx={{ mb: 3 }} />
-      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "repeat(4, 1fr)" }, gap: 2, mb: 3 }}>
+      <Skeleton height="40px" width="220px" mb={2} borderRadius="8px" />
+      <Skeleton height="24px" width="320px" mb={6} borderRadius="8px" />
+      <Box display="grid" gridTemplateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }} gap={4} mb={6}>
         {[1, 2, 3, 4].map((i) => (
-          <Skeleton key={i} variant="rounded" height={110} sx={{ borderRadius: 2 }} />
+          <Skeleton key={i} height="110px" borderRadius="16px" />
         ))}
       </Box>
-      <Skeleton variant="rounded" height={280} sx={{ borderRadius: 2 }} />
+      <Skeleton height="280px" borderRadius="16px" />
     </Box>
   );
 }

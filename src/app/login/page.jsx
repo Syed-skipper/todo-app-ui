@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Button from "@mui/material/Button";
-import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
+import { Button } from "@chakra-ui/react";
+import { HiOutlineWallet } from "react-icons/hi2";
+import { appColors } from "../../theme/theme";
 import { authApi } from "../../lib/api";
 import "./login.css";
 
@@ -64,7 +65,7 @@ export default function Login() {
       <div className="login-container">
         <div className="login-brand">
           <div className="login-brand-icon">
-            <AccountBalanceWalletOutlinedIcon sx={{ fontSize: 28 }} />
+            <HiOutlineWallet size={28} />
           </div>
           <h1>Family Expense</h1>
           <p>
@@ -111,16 +112,15 @@ export default function Login() {
           )}
           <Button
             type="submit"
-            variant="contained"
-            fullWidth
-            disabled={loading}
-            sx={{
-              py: 1.5,
-              mt: 1,
-              borderRadius: 3,
-              fontSize: "0.95rem",
-              boxShadow: "0 4px 14px rgba(107, 144, 128, 0.3)",
-            }}
+            w="full"
+            mt={2}
+            py={6}
+            borderRadius="12px"
+            bg={appColors.sage}
+            color="white"
+            _hover={{ bg: appColors.sageLight }}
+            loading={loading}
+            boxShadow="0 4px 14px rgba(107, 144, 128, 0.3)"
           >
             {loading ? "Please wait…" : isLogin ? "Sign in" : "Create account"}
           </Button>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Typography, Box, LinearProgress, Chip, Grid, alpha } from "@mui/material";
+import { Box, Text, Progress, Badge, SimpleGrid, Flex } from "@chakra-ui/react";
 import PageHeader from "../../../components/PageHeader";
 import PageLoading from "../../../components/ui/PageLoading";
 import { budgetsApi } from "../../../lib/api";
@@ -33,85 +33,46 @@ export default function BudgetsPage() {
       {loading ? (
         <PageLoading />
       ) : budgets.length === 0 ? (
-        <Box
-          sx={{
-            textAlign: "center",
-            py: 8,
-            bgcolor: alpha(appColors.mist, 0.4),
-            borderRadius: 3,
-            border: `1px dashed ${appColors.border}`,
-          }}
-        >
-          <Typography color="text.secondary">
-            No budgets set for this month yet.
-          </Typography>
+        <Box textAlign="center" py={12} bg={appColors.mist} borderRadius="16px" border="1px dashed" borderColor={appColors.border}>
+          <Text color={appColors.inkMuted}>No budgets set for this month yet.</Text>
         </Box>
       ) : (
-        <Grid container spacing={2.5}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} gap={5}>
           {budgets.map((b) => {
             const style = statusStyles[b.status] || statusStyles.ok;
             return (
-              <Grid item xs={12} md={6} key={b._id}>
-                <Box
-                  sx={{
-                    p: 2.5,
-                    bgcolor: appColors.paper,
-                    borderRadius: 3,
-                    border: `1px solid ${appColors.border}`,
-                  }}
-                >
-                  <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1.5 }}>
-                    <Box>
-                      <Typography fontWeight={600} textTransform="capitalize" color="text.primary">
-                        {b.type} budget
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {b.member?.name || b.card?.nickname || b.category || "Family overall"}
-                        {" · "}
-                        {b.month}/{b.year}
-                      </Typography>
-                    </Box>
-                    <Chip
-                      label={style.label}
-                      size="small"
-                      sx={{ bgcolor: style.bg, color: style.color, fontWeight: 500 }}
+              <Box key={b._id} p={5} bg={appColors.paper} borderRadius="16px" border="1px solid" borderColor={appColors.border}>
+                <Flex justify="space-between" mb={3}>
+                  <Box>
+                    <Text fontWeight={600} textTransform="capitalize">{b.type} budget</Text>
+                    <Text fontSize="sm" color={appColors.inkMuted}>
+                      {b.member?.name || b.card?.nickname || b.category || "Family overall"}
+                      {" · "}
+                      {b.month}/{b.year}
+                    </Text>
+                  </Box>
+                  <Badge bg={style.bg} color={style.color} px={2} py={0.5} borderRadius="8px">
+                    {style.label}
+                  </Badge>
+                </Flex>
+                <Flex justify="space-between" mb={2}>
+                  <Text fontSize="sm" color={appColors.inkMuted}>Spent ₹{b.spent?.toLocaleString("en-IN")}</Text>
+                  <Text fontSize="sm" color={appColors.inkMuted}>of ₹{b.amount?.toLocaleString("en-IN")}</Text>
+                </Flex>
+                <Progress.Root value={Math.min(100, b.percentUsed || 0)} max={100} size="sm" mb={2}>
+                  <Progress.Track bg={appColors.mist}>
+                    <Progress.Range
+                      bg={b.status === "exceeded" ? appColors.error : b.status === "warning" ? appColors.warning : appColors.sage}
                     />
-                  </Box>
-
-                  <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                    <Typography variant="body2" color="text.secondary">
-                      Spent ₹{b.spent?.toLocaleString("en-IN")}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      of ₹{b.amount?.toLocaleString("en-IN")}
-                    </Typography>
-                  </Box>
-
-                  <LinearProgress
-                    variant="determinate"
-                    value={Math.min(100, b.percentUsed || 0)}
-                    sx={{
-                      height: 10,
-                      mb: 1,
-                      "& .MuiLinearProgress-bar": {
-                        bgcolor:
-                          b.status === "exceeded"
-                            ? appColors.error
-                            : b.status === "warning"
-                              ? appColors.warning
-                              : appColors.sage,
-                      },
-                    }}
-                  />
-
-                  <Typography variant="caption" color="text.secondary">
-                    ₹{b.remaining?.toLocaleString("en-IN")} remaining · {b.percentUsed}% used
-                  </Typography>
-                </Box>
-              </Grid>
+                  </Progress.Track>
+                </Progress.Root>
+                <Text fontSize="xs" color={appColors.inkMuted}>
+                  ₹{b.remaining?.toLocaleString("en-IN")} remaining · {b.percentUsed}% used
+                </Text>
+              </Box>
             );
           })}
-        </Grid>
+        </SimpleGrid>
       )}
     </>
   );

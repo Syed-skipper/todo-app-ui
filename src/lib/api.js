@@ -33,11 +33,33 @@ export const expensesApi = {
   create: (data) => api.post('expenses', data),
   update: (id, data) => api.put(`expenses/${id}`, data),
   remove: (id) => api.delete(`expenses/${id}`),
+  importCsv: (file) => {
+    const form = new FormData();
+    form.append('file', file);
+    return api.post('expenses/import', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
 };
 
-export const membersApi = {
-  list: () => api.get('members'),
-  dashboard: (id, params) => api.get(`members/${id}/dashboard`, { params }),
+export const familyMembersApi = {
+  list: () => api.get('family-members'),
+  create: (data) => api.post('family-members', data),
+  update: (id, data) => api.put(`family-members/${id}`, data),
+  remove: (id) => api.delete(`family-members/${id}`),
+};
+
+export const settlementsApi = {
+  balances: (params) => api.get('settlements/balances', { params }),
+  statement: (params) => api.get('settlements/statement', { params }),
+  memberReport: (memberId, params) => api.get(`settlements/member/${memberId}/report`, { params }),
+  whatsapp: (memberId, params) => api.get(`settlements/member/${memberId}/whatsapp`, { params }),
+};
+
+export const memberPaymentsApi = {
+  list: (params) => api.get('member-payments', { params }),
+  create: (data) => api.post('member-payments', data),
+  remove: (id) => api.delete(`member-payments/${id}`),
 };
 
 export const budgetsApi = {
@@ -53,10 +75,15 @@ export const analyticsApi = {
 export const paymentsApi = {
   list: (params) => api.get('payments', { params }),
   upcoming: (days = 7) => api.get('payments/upcoming', { params: { days } }),
+  create: (data) => api.post('payments', data),
+  markPaid: (id, data) => api.patch(`payments/${id}/pay`, data),
 };
 
-export const emiApi = {
-  list: () => api.get('emi'),
+export const reportsApi = {
+  exportCsv: (params) =>
+    api.get('reports/export/csv', { params, responseType: 'blob' }),
+  exportPdf: (params) =>
+    api.get('reports/monthly/pdf', { params, responseType: 'blob' }),
 };
 
 export const notificationsApi = {

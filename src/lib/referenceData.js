@@ -1,5 +1,5 @@
-import { getCached } from './simpleCache';
-import { cardsApi, membersApi } from './api';
+import { getCached, invalidateCache } from './simpleCache';
+import { cardsApi, familyMembersApi } from './api';
 
 export const fetchCards = () =>
   getCached('cards', async () => {
@@ -7,8 +7,10 @@ export const fetchCards = () =>
     return r.data.data || [];
   });
 
-export const fetchMembers = () =>
-  getCached('members', async () => {
-    const r = await membersApi.list();
+export const fetchFamilyMembers = () =>
+  getCached('familyMembers', async () => {
+    const r = await familyMembersApi.list();
     return r.data.data || [];
   });
+
+export { invalidateCache };

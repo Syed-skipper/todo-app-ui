@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Box, Container } from "@mui/material";
+import { Box, Container } from "@chakra-ui/react";
 import AppNav from "../../components/AppNav";
 
 export default function MainLayout({ children }) {
@@ -14,9 +14,9 @@ export default function MainLayout({ children }) {
   }, [router]);
 
   return (
-    <Box sx={{ minHeight: "100vh" }}>
+    <Box minH="100vh">
       <AppNav />
-      <Container maxWidth="lg" sx={{ py: { xs: 3, md: 4 }, px: { xs: 2, sm: 3 } }}>
+      <Container maxW="container.lg" py={{ base: 6, md: 8 }} px={{ base: 4, sm: 6 }}>
         {children}
       </Container>
     </Box>

@@ -1,29 +1,18 @@
 "use client";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import { appColors } from "../theme/theme";
 
 export default function PageHeader({ title, subtitle, action }) {
   if (!title) return null;
   return (
-    <Box
-      sx={{
-        mb: 3.5,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-        gap: 2,
-        flexWrap: "wrap",
-      }}
-    >
+    <Box mb={6} display="flex" justifyContent="space-between" alignItems="flex-start" gap={4} flexWrap="wrap">
       <Box>
-        <Typography variant="h4" sx={{ fontWeight: 600, color: appColors.ink, mb: subtitle ? 0.5 : 0 }}>
+        <Heading size="xl" fontWeight={600} color={appColors.ink} mb={subtitle ? 1 : 0}>
           {title}
-        </Typography>
+        </Heading>
         {subtitle && (
-          <Typography variant="body1" color="text.secondary">
-            {subtitle}
-          </Typography>
+          <Text color={appColors.inkMuted}>{subtitle}</Text>
         )}
       </Box>
       {action}

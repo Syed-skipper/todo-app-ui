@@ -1,19 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  TextField,
-  Typography,
-  IconButton,
-  Box,
-  Alert,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Box, Button, Stack, Flex, Alert } from "@chakra-ui/react";
+import AppModal from "./ui/AppModal";
+import { FormInput, FormTextarea } from "./ui/form";
 import { cardsApi } from "../lib/api";
 import { invalidateCache } from "../lib/simpleCache";
 import { appColors } from "../theme/theme";
@@ -26,22 +16,7 @@ const defaultForm = {
   billingCycleStart: "1",
   billingCycleEnd: "30",
   dueDate: "15",
-};
-
-const INPUT_HEIGHT = 52;
-
-const fieldSx = {
-  width: "100%",
-  "& .MuiOutlinedInput-root": {
-    minHeight: INPUT_HEIGHT,
-    borderRadius: "12px",
-    bgcolor: appColors.paper,
-  },
-  "& .MuiOutlinedInput-input": {
-    py: "14px",
-    px: "14px",
-    fontSize: "0.9375rem",
-  },
+  notes: "",
 };
 
 export default function AddCardModal({ open, onClose, onCreated }) {
@@ -71,61 +46,80 @@ export default function AddCardModal({ open, onClose, onCreated }) {
         billingCycleEnd: parseInt(form.billingCycleEnd, 10),
         dueDate: parseInt(form.dueDate, 10),
         availableBalance: creditLimit,
+        notes: form.notes?.trim() || undefined,
       };
       const res = await cardsApi.create(payload);
       invalidateCache("cards");
-      const card = res.data.data;
-      onCreated?.(card);
+      onCreated?.(res.data.data);
       handleClose();
     } catch (err) {
-      const msg =
+      setError(
         err.response?.data?.message ||
-        (err.response?.status === 403
-          ? "Only admin can add cards. Ask your family admin."
-          : "Could not add card. Check all fields.");
-      setError(msg);
+          (err.response?.status === 403
+            ? "Only admin can add cards. Ask your family admin."
+            : "Could not add card. Check all fields.")
+      );
     } finally {
       setSaving(false);
     }
   };
 
+  const footer = (
+    <>
+      <Button flex={1} variant="outline" onClick={handleClose} disabled={saving} borderColor={appColors.border}>
+        Cancel
+      </Button>
+      <Button
+        flex={1}
+        bg={appColors.sage}
+        color="white"
+        _hover={{ bg: appColors.sageLight }}
+        onClick={handleSubmit}
+        disabled={saving}
+        loading={saving}
+      >
+        {saving ? "Saving…" : "Add card"}
+      </Button>
+    </>
+  );
+
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" PaperProps={{ sx: { borderRadius: 3 } }}>
-      <DialogTitle sx={{ pr: 6, pb: 1 }}>
-        <Typography variant="h6" fontWeight={600}>
-          Add credit card
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Register a family card for expense tracking
-        </Typography>
-        <IconButton onClick={handleClose} sx={{ position: "absolute", right: 12, top: 12 }} size="small">
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent sx={{ px: 3, pt: 2, pb: 2 }}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
-          {error && <Alert severity="error">{error}</Alert>}
-          <TextField variant="outlined" sx={fieldSx} label="Card nickname" name="nickname" value={form.nickname} onChange={handleChange} placeholder="e.g. HDFC Primary" required />
-          <TextField variant="outlined" sx={fieldSx} label="Bank name" name="bankName" value={form.bankName} onChange={handleChange} placeholder="e.g. HDFC" required />
-          <Box sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", sm: "row" }, "& > *": { flex: 1, minWidth: 0 } }}>
-            <TextField variant="outlined" sx={fieldSx} label="Last 4 digits" name="lastFourDigits" value={form.lastFourDigits} onChange={handleChange} inputProps={{ maxLength: 4 }} required />
-            <TextField variant="outlined" sx={fieldSx} label="Credit limit (₹)" name="creditLimit" type="number" value={form.creditLimit} onChange={handleChange} required />
+    <AppModal
+      open={open}
+      onClose={handleClose}
+      title="Add credit card"
+      subtitle="Register a family card for expense tracking"
+      footer={footer}
+      maxW="520px"
+    >
+      <Stack gap={5}>
+        {error && (
+          <Alert.Root status="error" borderRadius="12px">
+            <Alert.Indicator />
+            <Alert.Title>{error}</Alert.Title>
+          </Alert.Root>
+        )}
+        <FormInput label="Card nickname" name="nickname" value={form.nickname} onChange={handleChange} placeholder="e.g. HDFC Primary" required />
+        <FormInput label="Bank name" name="bankName" value={form.bankName} onChange={handleChange} placeholder="e.g. HDFC" required />
+        <Flex gap={4} direction={{ base: "column", sm: "row" }}>
+          <Box flex={1}>
+            <FormInput label="Last 4 digits" name="lastFourDigits" value={form.lastFourDigits} onChange={handleChange} maxLength={4} required />
           </Box>
-          <Box sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", sm: "row" }, "& > *": { flex: 1, minWidth: 0 } }}>
-            <TextField variant="outlined" sx={fieldSx} label="Billing cycle start (day)" name="billingCycleStart" type="number" value={form.billingCycleStart} onChange={handleChange} inputProps={{ min: 1, max: 31 }} required />
-            <TextField variant="outlined" sx={fieldSx} label="Billing cycle end (day)" name="billingCycleEnd" type="number" value={form.billingCycleEnd} onChange={handleChange} inputProps={{ min: 1, max: 31 }} required />
+          <Box flex={1}>
+            <FormInput label="Credit limit (₹)" name="creditLimit" type="number" value={form.creditLimit} onChange={handleChange} required />
           </Box>
-          <TextField variant="outlined" sx={fieldSx} label="Payment due day" name="dueDate" type="number" value={form.dueDate} onChange={handleChange} inputProps={{ min: 1, max: 31 }} required />
-        </Box>
-      </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 2.5, pt: 0, gap: 1.5 }}>
-        <Button onClick={handleClose} variant="outlined" fullWidth disabled={saving}>
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit} variant="contained" fullWidth disabled={saving}>
-          {saving ? "Saving…" : "Add card"}
-        </Button>
-      </DialogActions>
-    </Dialog>
+        </Flex>
+        <Flex gap={4} direction={{ base: "column", sm: "row" }}>
+          <Box flex={1}>
+            <FormInput label="Billing cycle start (day)" name="billingCycleStart" type="number" value={form.billingCycleStart} onChange={handleChange} min={1} max={31} required />
+          </Box>
+          <Box flex={1}>
+            <FormInput label="Billing cycle end (day)" name="billingCycleEnd" type="number" value={form.billingCycleEnd} onChange={handleChange} min={1} max={31} required />
+          </Box>
+        </Flex>
+        <FormInput label="Payment due day" name="dueDate" type="number" value={form.dueDate} onChange={handleChange} min={1} max={31} required />
+        <FormTextarea label="Notes (optional)" name="notes" value={form.notes} onChange={handleChange} rows={2} />
+      </Stack>
+    </AppModal>
   );
 }
