@@ -1,11 +1,9 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { Box, Text, Progress, Badge, SimpleGrid, Flex } from "@chakra-ui/react";
-import PageHeader from "../../../components/PageHeader";
-import PageLoading from "../../../components/ui/PageLoading";
-import { budgetsApi } from "../../../lib/api";
-import { appColors } from "../../../theme/theme";
+import PageHeader from "../components/PageHeader";
+import PageLoading from "../components/ui/PageLoading";
+import { budgetsApi } from "../lib/api";
+import { appColors } from "../theme/theme";
 
 const statusStyles = {
   ok: { bg: appColors.mist, color: appColors.sage, label: "On track" },

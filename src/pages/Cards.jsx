@@ -1,14 +1,12 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { Box, SimpleGrid, Text, Progress, Badge, Skeleton, Button, Flex } from "@chakra-ui/react";
 import { HiCreditCard, HiPlus } from "react-icons/hi2";
-import PageHeader from "../../../components/PageHeader";
-import AddCardModal from "../../../components/AddCardModal";
-import { invalidateCache } from "../../../lib/simpleCache";
-import { cardsApi } from "../../../lib/api";
-import { fetchCards } from "../../../lib/referenceData";
-import { appColors } from "../../../theme/theme";
+import PageHeader from "../components/PageHeader";
+import AddCardModal from "../components/AddCardModal";
+import { invalidateCache } from "../lib/simpleCache";
+import { cardsApi } from "../lib/api";
+import { fetchCards } from "../lib/referenceData";
+import { appColors } from "../theme/theme";
 
 const cardGradients = [
   "linear-gradient(135deg, #a4c3b2 0%, #6b9080 100%)",

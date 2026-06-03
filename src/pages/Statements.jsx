@@ -1,16 +1,14 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { Box, Text, SimpleGrid, Flex } from "@chakra-ui/react";
-import PageHeader from "../../../components/PageHeader";
-import StatCard from "../../../components/ui/StatCard";
-import SoftCard from "../../../components/ui/SoftCard";
-import CategoryChip from "../../../components/ui/CategoryChip";
-import PageLoading from "../../../components/ui/PageLoading";
-import { FormSelect } from "../../../components/ui/form";
-import { settlementsApi } from "../../../lib/api";
-import { fetchCards } from "../../../lib/referenceData";
-import { appColors } from "../../../theme/theme";
+import PageHeader from "../components/PageHeader";
+import StatCard from "../components/ui/StatCard";
+import SoftCard from "../components/ui/SoftCard";
+import CategoryChip from "../components/ui/CategoryChip";
+import PageLoading from "../components/ui/PageLoading";
+import { FormSelect } from "../components/ui/form";
+import { settlementsApi } from "../lib/api";
+import { fetchCards } from "../lib/referenceData";
+import { appColors } from "../theme/theme";
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 

@@ -1,16 +1,14 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { Box, Button, Text, IconButton, Stack, Flex } from "@chakra-ui/react";
 import { HiPlus, HiPencil, HiTrash } from "react-icons/hi2";
-import PageHeader from "../../../components/PageHeader";
-import PageLoading from "../../../components/ui/PageLoading";
-import AppModal from "../../../components/ui/AppModal";
-import { FormInput, FormTextarea } from "../../../components/ui/form";
-import { familyMembersApi } from "../../../lib/api";
-import { invalidateCache } from "../../../lib/simpleCache";
-import { fetchFamilyMembers } from "../../../lib/referenceData";
-import { appColors } from "../../../theme/theme";
+import PageHeader from "../components/PageHeader";
+import PageLoading from "../components/ui/PageLoading";
+import AppModal from "../components/ui/AppModal";
+import { FormInput, FormTextarea } from "../components/ui/form";
+import { familyMembersApi } from "../lib/api";
+import { invalidateCache } from "../lib/simpleCache";
+import { fetchFamilyMembers } from "../lib/referenceData";
+import { appColors } from "../theme/theme";
 
 const empty = { name: "", relationship: "", phone: "", notes: "" };
 

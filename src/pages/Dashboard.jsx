@@ -1,15 +1,13 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { Box, SimpleGrid, Text, Progress, Badge } from "@chakra-ui/react";
 import { HiArrowTrendingUp, HiCreditCard, HiUser, HiChartPie } from "react-icons/hi2";
-import PageHeader from "../../../components/PageHeader";
-import StatCard from "../../../components/ui/StatCard";
-import SoftCard from "../../../components/ui/SoftCard";
-import CategoryChip from "../../../components/ui/CategoryChip";
-import PageLoading from "../../../components/ui/PageLoading";
-import { analyticsApi, paymentsApi } from "../../../lib/api";
-import { appColors } from "../../../theme/theme";
+import PageHeader from "../components/PageHeader";
+import StatCard from "../components/ui/StatCard";
+import SoftCard from "../components/ui/SoftCard";
+import CategoryChip from "../components/ui/CategoryChip";
+import PageLoading from "../components/ui/PageLoading";
+import { analyticsApi, paymentsApi } from "../lib/api";
+import { appColors } from "../theme/theme";
 
 export default function DashboardPage() {
   const [data, setData] = useState(null);

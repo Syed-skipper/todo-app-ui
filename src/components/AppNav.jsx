@@ -1,7 +1,4 @@
-"use client";
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -13,8 +10,7 @@ import {
   Portal,
   Badge,
 } from "@chakra-ui/react";
-import { HiBars3, HiBell, HiMoon, HiSun } from "react-icons/hi2";
-import { HiOutlineWallet } from "react-icons/hi2";
+import { HiBars3, HiBell, HiMoon, HiSun, HiOutlineWallet } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import { notificationsApi } from "../lib/api";
 import { appColors } from "../theme/theme";
@@ -29,12 +25,11 @@ const pages = [
   { label: "Cards", path: "/cards" },
 ];
 
-function NavLink({ href, active, children }) {
+function NavLink({ to, active, children }) {
   return (
     <Box
       as={Link}
-      href={href}
-      prefetch
+      to={to}
       px={4}
       py={2}
       borderRadius="8px"
@@ -52,7 +47,8 @@ function NavLink({ href, active, children }) {
 }
 
 export default function AppNav() {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { mode, toggleMode } = useThemeMode();
   const [mounted, setMounted] = useState(false);
   const [userName, setUserName] = useState("");
@@ -69,7 +65,7 @@ export default function AppNav() {
 
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = "/login";
+    navigate("/login");
   };
 
   const initials = userName
@@ -94,8 +90,8 @@ export default function AppNav() {
     >
       <Container maxW="container.lg" px={4}>
         <Box display="flex" alignItems="center" gap={4} py={3} minH="64px">
-          <Link href="/dashboard" prefetch style={{ textDecoration: "none", color: "inherit", flexGrow: { base: 1, md: 0 } }}>
-            <Box display="flex" alignItems="center" gap={3}>
+          <Link to="/dashboard" style={{ textDecoration: "none", color: "inherit", flexGrow: 1 }}>
+            <Box display="flex" alignItems="center" gap={3} flexGrow={{ base: 1, md: 0 }}>
               <Box
                 w="40px"
                 h="40px"
@@ -122,7 +118,7 @@ export default function AppNav() {
 
           <Box display={{ base: "none", md: "flex" }} gap={1} flex={1} ml={2}>
             {pages.map((p) => (
-              <NavLink key={p.path} href={p.path} active={pathname === p.path}>
+              <NavLink key={p.path} to={p.path} active={pathname === p.path}>
                 {p.label}
               </NavLink>
             ))}
@@ -139,7 +135,7 @@ export default function AppNav() {
                 <Menu.Content borderRadius="12px" minW="180px" bg={appColors.paper} borderColor={appColors.border}>
                   {pages.map((p) => (
                     <Menu.Item key={p.path} value={p.path} asChild>
-                      <Link href={p.path} prefetch style={{ textDecoration: "none", width: "100%" }}>
+                      <Link to={p.path} style={{ textDecoration: "none", width: "100%" }}>
                         {p.label}
                       </Link>
                     </Menu.Item>

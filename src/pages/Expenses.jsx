@@ -1,18 +1,16 @@
-"use client";
-
 import { useEffect, useState, useCallback } from "react";
 import { Box, Button, Flex, Text, IconButton, Input } from "@chakra-ui/react";
 import { HiPlus, HiArrowUpTray, HiPencil, HiTrash, HiMagnifyingGlass } from "react-icons/hi2";
-import PageHeader from "../../../components/PageHeader";
-import ExpenseModal from "../../../components/ExpenseModal";
-import CategoryChip from "../../../components/ui/CategoryChip";
-import PageLoading from "../../../components/ui/PageLoading";
-import { FormSelect } from "../../../components/ui/form";
-import { expensesApi } from "../../../lib/api";
-import { fetchCards, fetchFamilyMembers } from "../../../lib/referenceData";
-import { invalidateCache } from "../../../lib/simpleCache";
-import { useDebounced } from "../../../hooks/useDebounced";
-import { appColors } from "../../../theme/theme";
+import PageHeader from "../components/PageHeader";
+import ExpenseModal from "../components/ExpenseModal";
+import CategoryChip from "../components/ui/CategoryChip";
+import PageLoading from "../components/ui/PageLoading";
+import { FormSelect } from "../components/ui/form";
+import { expensesApi } from "../lib/api";
+import { fetchCards, fetchFamilyMembers } from "../lib/referenceData";
+import { invalidateCache } from "../lib/simpleCache";
+import { useDebounced } from "../hooks/useDebounced";
+import { appColors } from "../theme/theme";
 
 const CATEGORIES = [
   "Food", "Grocery", "Fuel", "Shopping", "EMI", "Bills",

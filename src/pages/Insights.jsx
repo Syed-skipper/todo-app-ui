@@ -1,13 +1,11 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { Box, Text, Stack, Flex } from "@chakra-ui/react";
 import { HiLightBulb } from "react-icons/hi2";
-import PageHeader from "../../../components/PageHeader";
-import SoftCard from "../../../components/ui/SoftCard";
-import PageLoading from "../../../components/ui/PageLoading";
-import { analyticsApi } from "../../../lib/api";
-import { appColors } from "../../../theme/theme";
+import PageHeader from "../components/PageHeader";
+import SoftCard from "../components/ui/SoftCard";
+import PageLoading from "../components/ui/PageLoading";
+import { analyticsApi } from "../lib/api";
+import { appColors } from "../theme/theme";
 
 export default function InsightsPage() {
   const [insights, setInsights] = useState(null);

@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import {
   Box,
@@ -11,14 +9,14 @@ import {
   Alert,
 } from "@chakra-ui/react";
 import { HiClipboardDocument, HiCreditCard } from "react-icons/hi2";
-import PageHeader from "../../../components/PageHeader";
-import SoftCard from "../../../components/ui/SoftCard";
-import PageLoading from "../../../components/ui/PageLoading";
-import AppModal from "../../../components/ui/AppModal";
-import { FormInput, FormSelect } from "../../../components/ui/form";
-import { settlementsApi, memberPaymentsApi } from "../../../lib/api";
-import { fetchFamilyMembers } from "../../../lib/referenceData";
-import { appColors } from "../../../theme/theme";
+import PageHeader from "../components/PageHeader";
+import SoftCard from "../components/ui/SoftCard";
+import PageLoading from "../components/ui/PageLoading";
+import AppModal from "../components/ui/AppModal";
+import { FormInput, FormSelect } from "../components/ui/form";
+import { settlementsApi, memberPaymentsApi } from "../lib/api";
+import { fetchFamilyMembers } from "../lib/referenceData";
+import { appColors } from "../theme/theme";
 
 const METHODS = [
   { value: "upi", label: "UPI" },

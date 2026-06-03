@@ -1,12 +1,10 @@
-"use client";
-
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
 import { HiOutlineWallet } from "react-icons/hi2";
-import { appColors } from "../../theme/theme";
-import { authApi } from "../../lib/api";
-import "./login.css";
+import { appColors } from "../theme/theme";
+import { authApi } from "../lib/api";
+import "../styles/login.css";
 
 export default function Login() {
   const [name, setName] = useState("");
@@ -16,7 +14,7 @@ export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const saveSession = (res) => {
     const d = res.data?.data || res.data;
@@ -33,7 +31,7 @@ export default function Login() {
     try {
       const response = await authApi.login({ email, password });
       saveSession(response.data);
-      router.push("/dashboard");
+      navigate("/dashboard");
     } catch {
       setError("Invalid email or password");
     } finally {
@@ -52,7 +50,7 @@ export default function Login() {
     try {
       const response = await authApi.register({ name, email, password });
       saveSession(response.data);
-      router.push("/dashboard");
+      navigate("/dashboard");
     } catch {
       setError("Failed to register. Email may already exist.");
     } finally {
