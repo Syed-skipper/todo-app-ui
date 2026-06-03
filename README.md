@@ -30,7 +30,21 @@ npm run build
 npm run preview
 ```
 
-Output is in `dist/`. For static hosts (Netlify, Vercel, etc.), configure SPA fallback so all routes serve `index.html` (see `vercel.json`).
+Output is in `dist/`.
+
+### Deploy on Netlify
+
+The repo includes `netlify.toml` and `public/_redirects` so refreshing `/dashboard`, `/expenses`, etc. does not 404.
+
+In the Netlify UI, confirm:
+
+| Setting | Value |
+|---------|--------|
+| Base directory | `todo-app-ui` (if deploying from monorepo root) or leave empty if this repo is the site root |
+| Build command | `npm run build` |
+| Publish directory | `dist` |
+
+Set `VITE_API_URL` under **Site settings → Environment variables**, then redeploy.
 
 ## Project structure
 

@@ -1,0 +1,10 @@
+# Netlify settings for Vite + React Router (client-side routing)
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# SPA fallback: serve index.html for all routes (fixes 404 on refresh)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
